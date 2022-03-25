@@ -22,10 +22,15 @@ export function formatarBoolTexto(b) {
     return b ? 'Sim' : 'Não'
 }
 
+export function formatarCPF(s) {
+    return s.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4") // eslint-disable-line
+}
+
 export default {
     userKey,
     baseApiUrl,
     azulPadrao,
     showError,
-    formatarBoolTexto
+    formatarBoolTexto,
+    formatarCPF
 }

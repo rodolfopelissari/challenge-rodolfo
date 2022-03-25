@@ -31,6 +31,8 @@ import PageTitle from '@/components/templates/PageTitle'
 import { azulPadrao, baseApiUrl, showError, formatarBoolTexto } from '@/config/global'
 import axios from 'axios'
 
+//ver isso: adicionar um campo pra filtrar os usuários (rota no backend)
+
 export default {
     name: 'ListagemUsuarios',
     components: {
