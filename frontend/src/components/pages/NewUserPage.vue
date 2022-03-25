@@ -27,10 +27,13 @@
 
 <script>
 import PageTitle from '@/components/templates/PageTitle'
-import { azulPadrao } from '@/config/global'
+import { azulPadrao, baseApiUrl, showError } from '@/config/global'
+import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
     name: 'NewUserPage',
+    computed: mapState(['isUserVisible']),
     components: {
         PageTitle
     },
@@ -42,11 +45,29 @@ export default {
     },
     methods: {
         postUser() {
-            //ver isso: desenvolver a criação do novo usuário no backend
+            const body = { ...this.user }
+            if (!body.usr_admin) {
+                body.usr_admin = false
+            }
+            axios.post(`${baseApiUrl}/novo_usuario`, body)
+                .then(() => {
+                    this.$toasted.global.msgSuccess()
+                    this.$router.push({
+                        name: 'loginPage'
+                    })
+                })
+                .catch(showError)
         },
         openLogin() {
             this.$router.push({
                 name: 'loginPage'
+            })
+        }
+    },
+    mounted() {
+        if (this.isUserVisible) {
+            this.$router.push({
+                name: 'homePage'
             })
         }
     }

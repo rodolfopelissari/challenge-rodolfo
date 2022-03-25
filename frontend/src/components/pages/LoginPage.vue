@@ -25,10 +25,13 @@
 
 <script>
 import PageTitle from '@/components/templates/PageTitle'
-import { azulPadrao } from '@/config/global'
+import { azulPadrao, baseApiUrl, userKey, showError } from '@/config/global'
+import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
     name: 'LoginPage',
+    computed: mapState(['isUserVisible']),
     components: {
         PageTitle
     },
@@ -40,11 +43,26 @@ export default {
     },
     methods: {
         login() {
-            //ver isso: desenvolver o login no backend
+            axios.put(`${baseApiUrl}/login`, this.user)
+                .then(res => {
+                    this.$store.commit('setUser', res.data)
+                    localStorage.setItem(userKey, JSON.stringify(res.data))
+                    this.$router.push({
+                        name: 'homePage'
+                    })
+                })
+                .catch(showError)
         },
         openNewUser() {
             this.$router.push({
                 name: 'newUserPage'
+            })
+        }
+    },
+    mounted() {
+        if (this.isUserVisible) {
+            this.$router.push({
+                name: 'homePage'
             })
         }
     }
