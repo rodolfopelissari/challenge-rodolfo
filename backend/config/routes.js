@@ -1,4 +1,5 @@
 module.exports = app => {
+    const { userAdmin } = app.config.globalFunctions
 
     // Rotas abertas (sem proteção do token do usuário)
     app.put('/login', app.api.usuarios.login)
@@ -8,5 +9,5 @@ module.exports = app => {
     // Rotas protegidas pelo token do usuário
     app.route('/usuarios')
         .all(app.config.passport.authenticate())
-        .get(app.api.usuarios.get)
+        .get(userAdmin(app.api.usuarios.get)) //Somente usuários administradores fazem get nos usuários
 }

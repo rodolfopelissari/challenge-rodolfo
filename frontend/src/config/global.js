@@ -18,9 +18,14 @@ export function showError(e) {
     }
 }
 
+export function formatarBoolTexto(b) {
+    return b ? 'Sim' : 'Não'
+}
+
 export default {
     userKey,
     baseApiUrl,
     azulPadrao,
-    showError
+    showError,
+    formatarBoolTexto
 }

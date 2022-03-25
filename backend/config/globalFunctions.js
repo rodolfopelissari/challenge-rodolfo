@@ -46,11 +46,22 @@ module.exports = app => {
         return bcrypt.hashSync(password, salt)
     }
 
+    const userAdmin = middleware => {
+        return (req, res, next) => {
+            if (req.user.usr_admin) {
+                middleware(req, res, next)
+            } else {
+                res.status(401).send('Usuário não é administrador.')
+            }
+        }
+    }
+
     return {
         existsOrError,
         existsBoolOrError,
         equalsOrError,
         validarEmail,
-        encryptPassword
+        encryptPassword,
+        userAdmin
     }
 }
