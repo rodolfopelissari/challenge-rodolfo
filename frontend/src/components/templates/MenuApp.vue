@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer v-if="menuVisible" app dark :permanent="menuVisible" :color="azulPadrao">
         <v-list>
-            <v-list-item v-for="(menu, i) in menus" :key="i" link @click="openPage(menu.to)">
+            <v-list-item v-for="(menu, i) in mostrarMenus" :key="i" link @click="openPage(menu.to)">
                 <v-list-item-title>{{ menu.text }}</v-list-item-title>
             </v-list-item>
         </v-list>
@@ -14,22 +14,26 @@ import { mapState } from 'vuex'
 
 export default {
     name: 'MenuApp',
-    computed: mapState(['menuVisible']),
+    computed: mapState(['menuVisible', 'user']),
     data() {
         return {
             azulPadrao,
+            mostrarMenus: [],
             menus: [
                 {
                     text: 'Início',
-                    to: 'homePage'
+                    to: 'homePage',
+                    requiresAdmin: false
                 },
                 {
                     text: 'Usuários',
-                    to: 'listagemUsuarios'
+                    to: 'listagemUsuarios',
+                    requiresAdmin: true
                 },
                 {
                     text: 'Alunos',
-                    to: 'listagemAlunos'
+                    to: 'listagemAlunos',
+                    requiresAdmin: false
                 }
             ]
         }
@@ -38,6 +42,17 @@ export default {
         openPage(namePage) {
             this.$router.push({
                 name: namePage
+            })
+        }
+    },
+    mounted() {
+        if (this.user.usr_admin) {
+            this.mostrarMenus = this.menus
+        } else {
+            this.menus.forEach(el => {
+                if (!el.requiresAdmin) {
+                    this.mostrarMenus.push(el)
+                }
             })
         }
     }

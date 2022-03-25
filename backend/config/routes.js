@@ -6,5 +6,7 @@ module.exports = app => {
     app.post('/novo_usuario', app.api.usuarios.novoUsuario)
 
     // Rotas protegidas pelo token do usuário
-    //ver isso:
+    app.route('/usuarios')
+        .all(app.config.passport.authenticate())
+        .get(app.api.usuarios.get)
 }

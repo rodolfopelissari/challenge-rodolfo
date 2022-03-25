@@ -97,9 +97,37 @@ module.exports = app => {
             .catch(e => res.status(500).send(e))
     }
 
+    const paginacao = 10
+
+    const get = async (req, res) => {
+        const pg = parseInt(req.query.page) || 1
+        const cc = await app.db('usuarios')
+            .count('usr_email')
+            .then()
+        
+        const c = Object.values(cc[0])[0] //Dessa forma pega o resultado do count executado no SQL acima
+
+        app.db('usuarios')
+            .select(
+                'usr_email',
+                'usr_admin'
+            )
+            .orderBy('usr_email')
+            .limit(paginacao)
+            .offset((pg * paginacao) - paginacao)
+            .then(usr => res.json({
+                data: usr,
+                page: pg,
+                pagination: paginacao,
+                count: c
+            }))
+            .catch(e => res.status(500).send(e))
+    }
+
     return {
         login,
         validarToken,
-        novoUsuario
+        novoUsuario,
+        get
     }
 }
