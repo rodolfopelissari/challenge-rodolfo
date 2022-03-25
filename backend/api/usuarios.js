@@ -59,7 +59,7 @@ module.exports = app => {
         res.send(false)
     }
 
-    const novoUsuario = async (req, res) => {
+    const save = async (req, res) => {
         const p = { ...req.body }
         try {
             existsOrError(p.usr_email, 'E-mail deve ser informado.')
@@ -127,7 +127,7 @@ module.exports = app => {
     return {
         login,
         validarToken,
-        novoUsuario,
+        save,
         get
     }
 }

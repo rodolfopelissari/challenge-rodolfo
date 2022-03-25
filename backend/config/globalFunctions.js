@@ -16,6 +16,15 @@ module.exports = app => {
         }
     }
 
+    function notExistsOrError(value, msg) {
+        try {
+            existsOrError(value, msg)
+        } catch(e) {
+            return
+        }
+        throw msg
+    }
+
     function existsBoolOrError(value, flag, msg) {
         if (!value.hasOwnProperty(flag)) {
             throw msg
@@ -41,6 +50,58 @@ module.exports = app => {
         }
     }
 
+    function validarCPF(cpf) {
+        //https://irias.com.br/blog/como-validar-cpf-cnpj-em-node-js/
+        if (cpf.length == 11) { //CPF
+            let vCpf = cpf
+            let v1 = 0
+            let v2 = 0
+            let aux = false
+            
+            for (var i = 1; vCpf.length > i; i++) {
+                if (vCpf[i - 1] != vCpf[i]) {
+                    aux = true
+                }
+            }
+            
+            if (aux == false) {
+                return false
+            }
+            
+            for (var i = 0, p = 10; (vCpf.length - 2) > i; i++, p--) {
+                v1 += vCpf[i] * p
+            }
+
+            v1 = ((v1 * 10) % 11);
+            
+            if (v1 == 10) {
+                v1 = 0
+            }
+            
+            if (v1 != vCpf[9]) {
+                return false
+            }
+            
+            for (var i = 0, p = 11; (vCpf.length - 1) > i; i++, p--) {
+                v2 += vCpf[i] * p
+            }
+            
+            v2 = ((v2 * 10) % 11);
+            
+            if (v2 == 10) {
+                v2 = 0
+            }
+            
+            if (v2 != vCpf[10]) {
+                return false
+            } else {
+                return true
+            }
+        } else {
+            return false
+        }
+    }
+
     function encryptPassword(password) {
         const salt = bcrypt.genSaltSync(10)
         return bcrypt.hashSync(password, salt)
@@ -58,9 +119,11 @@ module.exports = app => {
 
     return {
         existsOrError,
+        notExistsOrError,
         existsBoolOrError,
         equalsOrError,
         validarEmail,
+        validarCPF,
         encryptPassword,
         userAdmin
     }
