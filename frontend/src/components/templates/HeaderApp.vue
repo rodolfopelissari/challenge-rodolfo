@@ -1,5 +1,6 @@
 <template>
     <v-app-bar class="app-bar" app dark :color="azulPadrao">
+        <v-btn v-if="isUserVisible" dark :color="azulPadrao" @click="setMenu">Menu</v-btn>
         <v-toolbar-title class="ml-5">Challenge Full-Stack</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn v-if="isUserVisible" dark :color="azulPadrao" @click="logout">Sair</v-btn>
@@ -25,6 +26,9 @@ export default {
             this.$router.push( {
                 name: 'loginPage'
             })
+        },
+        setMenu() {
+            this.$store.commit('setMenuVisible')
         }
     }
 }

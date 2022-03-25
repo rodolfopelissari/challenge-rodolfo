@@ -8,7 +8,8 @@ export default new Vuex.Store({
     //Variáveis expostas em toda a aplicação
     state: {
         user: null,
-        isUserVisible: false
+        isUserVisible: false,
+        menuVisible: true
     },
     mutations: {
         setUser(state, user) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
                 delete axios.defaults.headers.common['Authorization']
                 state.isUserVisible = false
             }
+        },
+        setMenuVisible(state) {
+            state.menuVisible = !state.menuVisible
         }
   }
 })
