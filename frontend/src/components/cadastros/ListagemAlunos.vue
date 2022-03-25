@@ -133,7 +133,7 @@ export default {
             this.$router.push({
                 name: 'cadastroAluno',
                 params: {
-                    aluno: ra
+                    pAluno: ra
                 }
             })
         },
@@ -141,7 +141,7 @@ export default {
             this.$router.push({
                 name: 'cadastroAluno',
                 params: {
-                    aluno: -1
+                    pAluno: ''
                 }
             })
         }
